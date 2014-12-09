@@ -14,6 +14,12 @@
 /*Main Route for Dashboard */
 Route::get('/', 'IndexController@showIndex');
 
+/*Default catch all view for wrong routes*/
+App::missing(function($exception)
+{
+        return View::make('oops');
+});
+
 Route::get('test', function()
 
 {
