@@ -43,8 +43,12 @@ Route::get('xen', function()
 	however this is done automatically - so you do not need to pass it.
 	For example, to do VM.get_all(session_id) and get all the vms as an array, then get/print the details of each
 	using VM.get_record(session_id, self) (self = VM object):
-	 */
-	
+
+	For parameters/usage, check out:
+            http://docs.vmd.citrix.com/XenServer/5.5.0/1.0/en_gb/api/docs/html/browser.html
+        To see how parametes are returned, print_r() is your friend :)
+        */
+
 	$vms_array = $xenserver->VM_get_all();
 
 	echo '<pre>';
@@ -101,9 +105,4 @@ echo  '</tbody>
 		    print_r($record);
 		echo '</pre>';
 	}
-	/*For parameters/usage, check out:
-	    http://docs.vmd.citrix.com/XenServer/5.5.0/1.0/en_gb/api/docs/html/browser.html
-	To see how parametes are returned, print_r() is your friend :)
-	*/
 });
-
