@@ -39,7 +39,7 @@
 <!--Loop through each VM and get the parameter requested below-->
 @foreach($vms as $vm)
 
-        <?php /*Pull ALL params for a single VM*/ ?>
+        <?php /*Pull ALL params for a single VM along with variables for resident and powerstate*/ ?>
         <?php $allParams = $xenserver->VM_get_record($vm); ?>
         <?php $residentOn = $allParams["resident_on"]; ?>
         <?php $powerState = $allParams["power_state"] ?>
