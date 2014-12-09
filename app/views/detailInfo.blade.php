@@ -18,6 +18,7 @@
 @section('content')
 
     <a href="{{ action('IndexController@showIndex') }}" class="btn btn-success"><i class="fa fa fa-reply"></i> Return</a>
+
     <br>
     
     <div style="text-align: left">

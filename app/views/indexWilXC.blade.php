@@ -32,7 +32,6 @@
 		<th>HVM Boot Policy</th>
 		<th>Power State</th>
 		<th>Action</th>
-	        <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +52,7 @@
                 <td><a href="/getVMInfoRef/{{ $vm }}">{{ $allParams["uuid"] }}</a></td>
                 <td>{{ $allParams["VCPUs_max"] }}</td>
                 
-                <?php $megaByte = $allParams["memory_target"] / '1048576' ?>
+                <?php $megaByte = $allParams["memory_static_max"] / '1048576' ?>
                 <td>{{ $megaByte }} MB</td>
             
 <?php /*Check if a VM is on a host and display row approprialy with link*/ ?>            
@@ -65,10 +64,17 @@
 @endif
             
                 <td>{{ $allParams["HVM_boot_policy"] }}</td>
-                <td>{{ $allParams["power_state"] }}</td>
+                
+                <?php $powerState = $allParams["power_state"] ?>
+                <td>{{ $powerState }}</td>
+<?php /*Check power state from variable above anddisplay row approprialy with link*/ ?> 
+@if($powerState == 'Halted')              
                 <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}"class="btn btn-success"> <i class="fa fa-play fa-fw"></i> Start</a></td>
+@elseif($powerState == 'Running')
                 <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-danger"> <i class="fa fa-stop fa-fw"></i> Stop</a></td>
-              
+@elseif($powerState == 'Suspended')
+                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-primary"> <i class="fa fa-pause fa-fw"></i> Start</a></td>
+@endif              
         </tr>
 @endif
 
