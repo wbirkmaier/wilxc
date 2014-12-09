@@ -3,11 +3,12 @@
 @section('active')
 
     <!-- Generate dynamic menu base on URL and Login Status -->
-	<li class="active"><a href="{{ action('IndexController@showIndex') }}">Home</a></li>
     @if (Auth::check())
         <li><a href="{{ action('IndexController@showIndex') }}"> <i class="fa fa-cogs"></i> Customize</a></li>
         <li><a href="{{ action('IndexController@showIndex') }}"> <i class="fa fa-sign-out"></i> Logout</a></li>
     @else
+        <li class="active"><a href="{{ action('IndexController@showIndex') }}"> <i class="fa fa fa-cogs"></i> xen1.bur</a></li>
+        <li><a href="{{ action('IndexController@showIndex') }}"> <i class="fa fa fa-cogs"></i> xen2.bur</a></li>
         <li><a href="{{ action('IndexController@showIndex') }}"> <i class="fa fa-sign-in"></i> Login</a></li>
         <li><a href="{{ action('IndexController@showIndex') }}"> <i class="fa fa-keyboard-o"></i> Register</a></li>
     @endif
@@ -54,8 +55,8 @@
                 <td>{{ $allParams["resident_on"] }}</td>
                 <td>{{ $allParams["HVM_boot_policy"] }}</td>
                 <td>{{ $allParams["power_state"] }}</td>
-                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}"class="btn btn-primary"> <i class="fa fa-pencil fa-fw"></i> Start</a></td>
-                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-danger"> <i class="fa fa-trash-o fa-lg"></i> Stop</a></td>
+                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}"class="btn btn-success"> <i class="fa fa-play fa-fw"></i> Start</a></td>
+                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-danger"> <i class="fa fa-stop fa-fw"></i> Stop</a></td>
               
         </tr>
 @endif

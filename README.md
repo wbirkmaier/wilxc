@@ -222,6 +222,8 @@ public function up()
 
 #Credits
 + code from <https://github.com/andygoodwin/PHP-xenapi>
++ Bootstrap <http://getbootstrap.com/>
++ Font Awesome <https://fortawesome.github.io/Font-Awesome/>
 
 ##Tips and Trick
 + php --ini
