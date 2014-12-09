@@ -11,10 +11,8 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+/*Main Route for Dashboard */
+Route::get('/', 'IndexController@showIndex');
 
 Route::get('test', function()
 
@@ -55,7 +53,7 @@ Route::get('xen', function()
 	<tbody>';
 	
 	
-	/*This could be faster to pull the info out of the $record variable rather than query the server each time*/
+	/*This is faster to pull the info out of the $allParams variable rather than query the server each time*/
 	foreach ($vms_array as $vm) 
         {	
                 /*Pull ALL params for a single VM*/
