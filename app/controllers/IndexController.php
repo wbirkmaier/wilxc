@@ -8,17 +8,12 @@ class IndexController extends BaseController {
             parent::__construct();
         }
         
-        /*Landing page for WilXC*/
-       public function showIndex()
-        {   
-            	/*Pull credentials from the Credentials class*/
-        	$url = Credentials::url();
-	        $login = Credentials::login();
-        	$password = Credentials::password(); 
-
-	        /*Connect to xenserver via HTTPS*/
-        	$xenserver = new XenApi($url, $login, $password);
+    /*Landing page for WilXC*/
+    public function showIndex()
+        {
+            /*Connect to xenserver via HTTPS and Credentials.php method*/
+            $xenserver = Credentials::loginXen();
         
-                return View::make('indexWilXC', compact('xenserver'));
+            return View::make('indexWilXC', compact('xenserver'));
         }
 }
