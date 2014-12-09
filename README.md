@@ -220,6 +220,10 @@ public function up()
 	}
 ```
 
+```
+php artisan migrate
+```
+
 
 #Credits
 + PHP XenApi code from <https://github.com/andygoodwin/PHP-xenapi>
