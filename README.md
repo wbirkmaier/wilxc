@@ -225,8 +225,9 @@ php artisan migrate
 ```
 
 
-#Credits
+#Credits & External notes
 + PHP XenApi code from <https://github.com/andygoodwin/PHP-xenapi>
++ XenServer Managment API <http://docs.vmd.citrix.com/XenServer/6.2.0/1.0/en_gb/api/>
 + Bootstrap <http://getbootstrap.com/>
 + Font Awesome <https://fortawesome.github.io/Font-Awesome/>
 
