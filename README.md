@@ -86,7 +86,8 @@ $env = $app->detectEnvironment(array(
 
 ##Database Setup
 ```mysql -u root```
-```create database laravel;```
+
+```create database wilxc;```
 
 exit the database.
 
@@ -221,7 +222,7 @@ public function up()
 
 
 #Credits
-+ code from <https://github.com/andygoodwin/PHP-xenapi>
++ PHP XenApi code from <https://github.com/andygoodwin/PHP-xenapi>
 + Bootstrap <http://getbootstrap.com/>
 + Font Awesome <https://fortawesome.github.io/Font-Awesome/>
 
