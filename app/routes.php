@@ -18,12 +18,24 @@ Route::get('/getVMInfoRef/{vmRef}', 'DetailsController@getVMInfoRef');
 
 Route::get('/getHostInfoRef/{hostRef}', 'DetailsController@getHostInfoRef');
 
+/*Operations on VMs Route*/
+Route::get('/startVMRef/{vmRef}', 'OperationsController@startVMRef');
+Route::get('/stopVMRef/{vmRef}', 'OperationsController@stopVMRef');
 
 /*Default catch all view for wrong routes*/
 App::missing(function($exception)
 {
         return View::make('oops');
 });
+
+
+
+
+
+
+
+
+
 
 /* Crap Routes for Testing */
 Route::get('test', function()
@@ -67,6 +79,9 @@ Route::get('xen', function()
     echo '<pre>';
             print_r($hosts_array);
         echo '</pre>';
+        
+    /*    $vm = 'OpaqueRef:dc5849a0-0677-0c22-1e67-27bf2939e9fa';
+        Credentials::loginXen()->VM_start($vm, False, True); */
 
     /* Need to speed up page 
 	echo'	<table class="table table-striped">

@@ -69,9 +69,9 @@
                 <td>{{ $powerState }}</td>
 <?php /*Check power state from variable above anddisplay row approprialy with link*/ ?> 
 @if($powerState == 'Halted')              
-                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}"class="btn btn-success"> <i class="fa fa-play fa-fw"></i> Start</a></td>
+                <td><a href="/startVMRef/{{ $vm }}"class="btn btn-success"> <i class="fa fa-play fa-fw"></i> Start</a></td>
 @elseif($powerState == 'Running')
-                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-danger"> <i class="fa fa-stop fa-fw"></i> Stop</a></td>
+                <td><a href="/stopVMRef/{{ $vm }}" class="btn btn-danger"> <i class="fa fa-stop fa-fw"></i> Stop</a></td>
 @elseif($powerState == 'Suspended')
                 <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-primary"> <i class="fa fa-pause fa-fw"></i> Start</a></td>
 @endif              
