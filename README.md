@@ -174,6 +174,52 @@ From main code remove
 include('xenapi.php');
 ```
 
+#User Authentication
+app/config/session.php
+
+```
+'driver' => 'database',
+```
+
+```
+php artisan session:table
+```
+
+```
+php artisan migrate
+```
+
+```
+php artisan migrate:make create_user_table
+```
+
+```
+public function up()
+	{
+         Schema::create('users', function($table)
+            {
+                $table->increments('id');
+                $table->string('username', 128)->unique();
+                $table->string('password', 60);
+                $table->string('email', 254)->unique();
+                $table->rememberToken();
+                $table->timestamps();
+            });
+	}
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('users');
+	}
+```
+
+
 #Credits
 + code from <https://github.com/andygoodwin/PHP-xenapi>
 
