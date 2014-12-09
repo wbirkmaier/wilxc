@@ -49,7 +49,7 @@
 @if($template == '')     
         <tr>
                 <td>{{ $allParams["name_label"] }}</td>
-                <td>{{ $allParams["uuid"] }}</td>
+                <td><a href="/showParams/{{ $vm }}">{{ $allParams["uuid"] }}</a></td>
                 <td>{{ $allParams["VCPUs_max"] }}</td>
                 <td>{{ $allParams["memory_target"] }}</td>
                 <td>{{ $allParams["resident_on"] }}</td>

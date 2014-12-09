@@ -14,6 +14,8 @@
 /*Main Route for Dashboard */
 Route::get('/', 'IndexController@showIndex');
 
+Route::get('/showParams/{vmRef}', 'VMDetailsController@getAllInfoRef');
+
 /*Default catch all view for wrong routes*/
 App::missing(function($exception)
 {
@@ -40,8 +42,10 @@ Route::get('xen', function()
 	/*Connect to xenserver via HTTPS*/
 	$xenserver = new XenApi($url, $login, $password);
 	
-        /*Get all VM references*/
+    /*Get all VM references*/
 	$vms_array = $xenserver->VM_get_all();
+    
+    
 
 	echo'	<table class="table table-striped">
         	<thead>
