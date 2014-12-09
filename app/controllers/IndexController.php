@@ -15,6 +15,7 @@ class IndexController extends BaseController {
             $xenserver = Credentials::loginXen();
         
             /*return View::make('indexWilXC', compact('xenserver')); */
+            /*return View::make('indexWilXC')->with('xenserver', $xenserver)->with('var',$var);*/
             return View::make('indexWilXC')->with('xenserver', $xenserver);
         }
 }

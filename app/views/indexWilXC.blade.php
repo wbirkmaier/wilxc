@@ -42,6 +42,7 @@
         <?php /*Pull ALL params for a single VM*/ ?>
         <?php $allParams = $xenserver->VM_get_record($vm); ?>
         <?php $residentOn = $allParams["resident_on"]; ?>
+        <?php $powerState = $allParams["power_state"] ?>
             
         <?php /*Check if a template to skip for now*/ ?>
         <?php $template = $xenserver->VM_get_is_a_template($vm); ?>
@@ -65,7 +66,6 @@
             
                 <td>{{ $allParams["HVM_boot_policy"] }}</td>
                 
-                <?php $powerState = $allParams["power_state"] ?>
                 <td>{{ $powerState }}</td>
 <?php /*Check power state from variable above anddisplay row approprialy with link*/ ?> 
 @if($powerState == 'Halted')              
