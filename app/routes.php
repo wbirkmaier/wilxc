@@ -14,7 +14,10 @@
 /*Main Route for Dashboard */
 Route::get('/', 'IndexController@showIndex');
 
-Route::get('/showParams/{vmRef}', 'VMDetailsController@getAllInfoRef');
+Route::get('/getVMInfoRef/{vmRef}', 'DetailsController@getVMInfoRef');
+
+Route::get('/getHostInfoRef/{hostRef}', 'DetailsController@getHostInfoRef');
+
 
 /*Default catch all view for wrong routes*/
 App::missing(function($exception)
@@ -22,6 +25,7 @@ App::missing(function($exception)
         return View::make('oops');
 });
 
+/* Crap Routes for Testing */
 Route::get('test', function()
 
 {
@@ -32,21 +36,39 @@ Route::get('test', function()
 	phpinfo();
 }); 
 
+/* For Testing Xen API */
 Route::get('xen', function()
 {
-	/*Pull credentials from the Credentials class*/
-	$url = Credentials::url();
-	$login = Credentials::login();
-	$password = Credentials::password(); 
+    
+    /*Classes, Fields and Messages
+    Classes have both fields and messages. Messages are either implicit or explicit where an implicit message is one of:
 
-	/*Connect to xenserver via HTTPS*/
-	$xenserver = new XenApi($url, $login, $password);
-	
+    a constructor (usually called "create");
+    a destructor (usually called "destroy");
+    "get_by_name_label";
+    "get_by_uuid"
+    "get_record"; and
+    "get_all".
+    Explicit messages include all the rest, more class-specific messages (e.g. "VM.start", "VM.clone")
+
+    Every field has at least one accessor depending both on its type and whether it is read-only or read-write. Accessors for a field named "X" would be    a proper subset of:
+
+    set_X: change the value of field X (only if it is read-write);
+    get_X: retrieve the value of field X;
+    add_to_X: add a key/value pair (only if field has type set or map); and
+    remove_from_X: remove a key (only if a field has type set or map). 
+    */
+
     /*Get all VM references*/
-	$vms_array = $xenserver->VM_get_all();
+	$vms_array = Credentials::loginXen()->VM_get_all();
     
-    
+    /*Get all Host references*/
+    $hosts_array = Credentials::loginXen()->host_get_all();
+    echo '<pre>';
+            print_r($hosts_array);
+        echo '</pre>';
 
+    /* Need to speed up page 
 	echo'	<table class="table table-striped">
         	<thead>
         	    	<tr>
@@ -63,13 +85,13 @@ Route::get('xen', function()
 	<tbody>';
 	
 	
-	/*This is faster to pull the info out of the $allParams variable rather than query the server each time*/
+	
 	foreach ($vms_array as $vm) 
         {	
-                /*Pull ALL params for a single VM*/
-                $allParams = $xenserver->VM_get_record($vm);
+    
+                $allParams = Credentials::loginXen()->VM_get_record($vm);
                 
-		/*Parameters to pull from allParams to build table*/
+	
 		$nameLabel = $allParams["name_label"];
 		$uuid = $allParams["uuid"];
 		$powerState = $allParams["power_state"];
@@ -79,10 +101,10 @@ Route::get('xen', function()
 		$HVMBootPolicy = $allParams["HVM_boot_policy"];
 		$VIFs = $allParams["VIFs"];
         	
-		/*Check if a template to skip for now*/
-		$template = $xenserver->VM_get_is_a_template($vm);
+	
+		$template = Credentials::loginXen()->VM_get_is_a_template($vm);
 		
-		/*Build table*/
+	
 		if ($template == '')
 			{
 				echo '<tr>';
@@ -134,7 +156,7 @@ echo  '</tbody>
 
 	foreach ($vms_array as $vm)
         {
-            $uuids = $xenserver->VM_get_allowed_operations($vm);
+            $uuids = Credentials::loginXen()->VM_get_allowed_operations($vm);
                 echo '<pre>';
                     print_r($uuids);
                 echo '</pre>';
@@ -143,11 +165,13 @@ echo  '</tbody>
 
 	foreach ($vms_array as $vm) 
 	{
-	    $record = $xenserver->VM_get_record($vm);
+	    $record = Credentials::loginXen()->VM_get_record($vm);
 		echo '<pre>';
 		    print_r($record);
 		echo '</pre>';
 	}
+    
+    */
 });
 
 	/* Once sucessfully logged in - any method (valid or not) is passed to the XenServer.

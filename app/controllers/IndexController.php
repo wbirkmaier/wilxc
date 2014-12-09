@@ -14,6 +14,7 @@ class IndexController extends BaseController {
             /*Connect to xenserver via HTTPS and Credentials.php method*/
             $xenserver = Credentials::loginXen();
         
-            return View::make('indexWilXC', compact('xenserver'));
+            /*return View::make('indexWilXC', compact('xenserver')); */
+            return View::make('indexWilXC')->with('xenserver', $xenserver);
         }
 }

@@ -17,7 +17,7 @@
 
 @section('content')
 
-<?php /*Get all VM references from IndexController*/ ?> 
+<?php /*Get all VM references from IndexController*/ ?>
 <?php $vms = $xenserver->VM_get_all(); ?>
 
 <!--Build table for main page  -->
@@ -42,17 +42,26 @@
 
         <?php /*Pull ALL params for a single VM*/ ?>
         <?php $allParams = $xenserver->VM_get_record($vm); ?>
-        
+        <?php $residentOn = $allParams["resident_on"]; ?>
+            
         <?php /*Check if a template to skip for now*/ ?>
         <?php $template = $xenserver->VM_get_is_a_template($vm); ?>
         
 @if($template == '')     
         <tr>
                 <td>{{ $allParams["name_label"] }}</td>
-                <td><a href="/showParams/{{ $vm }}">{{ $allParams["uuid"] }}</a></td>
+                <td><a href="/getVMInfoRef/{{ $vm }}">{{ $allParams["uuid"] }}</a></td>
                 <td>{{ $allParams["VCPUs_max"] }}</td>
                 <td>{{ $allParams["memory_target"] }}</td>
-                <td>{{ $allParams["resident_on"] }}</td>
+            
+<?php /*Check if a VM is on a host and display row approprialy with link*/ ?>            
+@if($residentOn == 'OpaqueRef:NULL')
+                <td>None</td>
+@else
+                <?php $hostDetails = Credentials::loginXen()->host_get_record($residentOn); ?>
+                <td><a href="/getHostInfoRef/{{ $allParams["resident_on"] }}">{{ $hostDetails["name_label"] }}</a></td>
+@endif
+            
                 <td>{{ $allParams["HVM_boot_policy"] }}</td>
                 <td>{{ $allParams["power_state"] }}</td>
                 <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}"class="btn btn-success"> <i class="fa fa-play fa-fw"></i> Start</a></td>
