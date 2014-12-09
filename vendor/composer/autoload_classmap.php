@@ -28,6 +28,9 @@ return array(
     'ClassPreloader\\Parser\\DirVisitor' => $vendorDir . '/classpreloader/classpreloader/src/ClassPreloader/Parser/DirVisitor.php',
     'ClassPreloader\\Parser\\FileVisitor' => $vendorDir . '/classpreloader/classpreloader/src/ClassPreloader/Parser/FileVisitor.php',
     'ClassPreloader\\Parser\\NodeTraverser' => $vendorDir . '/classpreloader/classpreloader/src/ClassPreloader/Parser/NodeTraverser.php',
+    'CreateSessionTable' => $baseDir . '/app/database/migrations/2014_12_09_070031_create_session_table.php',
+    'CreateUserTable' => $baseDir . '/app/database/migrations/2014_12_09_070328_create_user_table.php',
+    'Credentials' => $baseDir . '/app/models/Credentials.php',
     'Crypt_AES' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/AES.php',
     'Crypt_Base' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Base.php',
     'Crypt_Blowfish' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Blowfish.php',
@@ -415,6 +418,7 @@ return array(
     'Illuminate\\Workbench\\PackageCreator' => $vendorDir . '/laravel/framework/src/Illuminate/Workbench/PackageCreator.php',
     'Illuminate\\Workbench\\Starter' => $vendorDir . '/laravel/framework/src/Illuminate/Workbench/Starter.php',
     'Illuminate\\Workbench\\WorkbenchServiceProvider' => $vendorDir . '/laravel/framework/src/Illuminate/Workbench/WorkbenchServiceProvider.php',
+    'IndexController' => $baseDir . '/app/controllers/IndexController.php',
     'Jeremeamia\\SuperClosure\\ClosureLocation' => $vendorDir . '/jeremeamia/SuperClosure/src/Jeremeamia/SuperClosure/ClosureLocation.php',
     'Jeremeamia\\SuperClosure\\ClosureParser' => $vendorDir . '/jeremeamia/SuperClosure/src/Jeremeamia/SuperClosure/ClosureParser.php',
     'Jeremeamia\\SuperClosure\\SerializableClosure' => $vendorDir . '/jeremeamia/SuperClosure/src/Jeremeamia/SuperClosure/SerializableClosure.php',
@@ -1590,4 +1594,5 @@ return array(
     'Whoops\\Run' => $vendorDir . '/filp/whoops/src/Whoops/Run.php',
     'Whoops\\Util\\Misc' => $vendorDir . '/filp/whoops/src/Whoops/Util/Misc.php',
     'Whoops\\Util\\TemplateHelper' => $vendorDir . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
+    'XenApi' => $baseDir . '/app/models/XenApi.php',
 );
