@@ -52,7 +52,9 @@
                 <td>{{ $allParams["name_label"] }}</td>
                 <td><a href="/getVMInfoRef/{{ $vm }}">{{ $allParams["uuid"] }}</a></td>
                 <td>{{ $allParams["VCPUs_max"] }}</td>
-                <td>{{ $allParams["memory_target"] }}</td>
+                
+                <?php $megaByte = $allParams["memory_target"] / '1048576' ?>
+                <td>{{ $megaByte }} MB</td>
             
 <?php /*Check if a VM is on a host and display row approprialy with link*/ ?>            
 @if($residentOn == 'OpaqueRef:NULL')
