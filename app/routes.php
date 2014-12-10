@@ -23,6 +23,9 @@ Route::get('/startVMRef/{vmRef}', 'OperationsController@startVMRef');
 Route::get('/cleanShutdownVMRef/{vmRef}', 'OperationsController@cleanShutdownVMRef');
 Route::get('/suspendVMRef/{vmRef}', 'OperationsController@suspendVMRef');
 Route::get('/cleanRebootVMRef/{vmRef}', 'OperationsController@cleanRebootVMRef');
+Route::get('/resumeVMRef/{vmRef}', 'OperationsController@resumeVMRef');
+Route::get('/hardShutdownVMRef/{vmRef}', 'OperationsController@hardShutdownVMRef');
+Route::get('/hardRebootVMRef/{vmRef}', 'OperationsController@hardRebootVMRef');
 
 /*Default catch all view for wrong routes*/
 App::missing(function($exception)

@@ -47,6 +47,9 @@
             
         <?php /*Set powerState variable for current VM ObjRef*/ ?>   
         <?php $powerState = $allParams["power_state"] ?>
+        
+        <?php /*Set hvmBootState variable for current VM ObjRef*/ ?>   
+        <?php $hvmBootState = $allParams["HVM_boot_policy"] ?>
             
         <?php /*Check if a template to skip for now*/ ?>
         <?php $template = $xenserver->VM_get_is_a_template($vm); ?>
@@ -68,14 +71,27 @@
                 <?php $hostDetails = Credentials::loginXen()->host_get_record($residentOn); ?>
                 <td><a href="/getHostInfoRef/{{ $allParams["resident_on"] }}">{{ $hostDetails["name_label"] }}</a></td>
 @endif
-            
-                <td>{{ $allParams["HVM_boot_policy"] }}</td>
+                
+                <td>{{ $hvmBootState }}</td>
                 
                 <td>{{ $powerState }}</td>
 <?php /*Check power state from variable above anddisplay row approprialy with link*/ ?> 
 @if($powerState == 'Halted')              
                 <td><a href="/startVMRef/{{ $vm }}"class="btn btn-success btn-sm"> <i class="fa fa-play fa-fw"></i> Start VM</a></td>
 @elseif($powerState == 'Running')
+            @if($hvmBootState =='BIOS order')
+                <td>
+                    <div class="btn-group dropdown">
+                        <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-cog fa-spin fa-fw"></i> Ops</a>
+                        <a class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="fa fa-caret-down"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/hardShutdownVMRef/{{ $vm }}"><i class="fa fa-ban fa-fw"></i> Force Shutdown</a></li>
+                            <li><a href="/hardRebootVMRef/{{ $vm }}"><i class="fa fa-recycle fa-fw"></i> Force Reboot</a></li>
+                        </ul>
+                    </div>
+                </td>
+            @else
                 <td>
                     <div class="btn-group dropdown">
                         <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-cog fa-spin fa-fw"></i> Ops</a>
@@ -86,8 +102,8 @@
                             <li><a href="/suspendVMRef/{{ $vm }}"><i class="fa fa-pause fa-fw"></i> Suspend</a></li>
                             <li><a href="/cleanRebootVMRef/{{ $vm }}"><i class="fa fa-refresh fa-fw"></i> Reboot</a></li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="fa fa-flash fa-fw"></i> Force Shutdown</a></li>
-                            <li><a href="#"><i class="fa fa-recycle fa-fw"></i> Force Reboot</a></li>
+                            <li><a href="/hardShutdownVMRef/{{ $vm }}"><i class="fa fa-flash fa-fw"></i> Force Shutdown</a></li>
+                            <li><a href="/hardRebootVMRef/{{ $vm }}"><i class="fa fa-recycle fa-fw"></i> Force Reboot</a></li>
                             <li class="divider"></li>
                             <li><a href="#"><i class="fa fa-camera fa-fw"></i> Take Snapshot</a></li>
                             <li class="divider"></li>
@@ -95,9 +111,21 @@
                         </ul>
                     </div>
                 </td>
+            @endif
                 
 @elseif($powerState == 'Suspended')
-                <td><a href="{{ action('IndexController@showIndex', $allParams["uuid"]) }}" class="btn btn-primary"> <i class="fa fa-pause fa-fw"></i> Start</a></td>
+                <td>
+                    <div class="btn-group dropdown">
+                        <a class="btn btn-primary btn-sm" href="/resumeVMRef/{{ $vm }}"><i class="fa fa-pause fa-fw"></i> Ops</a>
+                        <a class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="fa fa-caret-down"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/resumeVMRef/{{ $vm }}"><i class="fa fa-refresh fa-fw"></i> Resume</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/hardShutdownVMRef/{{ $vm }}"><i class="fa fa-recycle fa-fw"></i> Force Shutdown</a></li>
+                        </ul>
+                    </div>
+                </td>
 @endif              
         </tr>
 @endif

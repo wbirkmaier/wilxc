@@ -52,4 +52,28 @@ class OperationsController extends BaseController {
             Credentials::loginXen()->VM_clean_reboot($vmRef);
             return Redirect::to('/')->with('flashBanner', 'VM Rebooted');
         }
+    
+    /*Start a: VM, paused, forced*/
+    public function resumeVMRef($vmRef) 
+        {
+            Credentials::loginXen()->VM_resume($vmRef, False, True);
+            return Redirect::to('/')->with('flashBanner', 'VM Resumed');
+        }
+    
+    /*No Extra Params*/
+    public function hardShutdownVMRef($vmRef) 
+        {
+            Credentials::loginXen()->VM_hard_shutdown($vmRef);
+            return Redirect::to('/')->with('flashBanner', 'VM Forced Shutdown');
+        }
+    
+    public function hardRebootVMRef($vmRef) 
+        {
+            Credentials::loginXen()->VM_hard_reboot($vmRef);
+            return Redirect::to('/')->with('flashBanner', 'VM Forced Reboot');
+        }
+    
+    
+    
+    
 }
