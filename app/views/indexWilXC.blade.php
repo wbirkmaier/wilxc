@@ -79,22 +79,26 @@
 @if($powerState == 'Halted')              
                 <td><a href="/startVMRef/{{ $vm }}"class="btn btn-success btn-sm"> <i class="fa fa-play fa-fw"></i> Start VM</a></td>
 @elseif($powerState == 'Running')
+            <?php /*Check if HVM and Generate shorter Menu*/ ?>
             @if($hvmBootState =='BIOS order')
                 <td>
                     <div class="btn-group dropdown">
-                        <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-cog fa-spin fa-fw"></i> Ops</a>
+                        <a class="btn btn-primary btn-sm" href="/getVMInfoRef/{{ $vm }}"><i class="fa fa-cog fa-spin fa-fw"></i> Ops</a>
                         <a class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="fa fa-caret-down"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/hardShutdownVMRef/{{ $vm }}"><i class="fa fa-ban fa-fw"></i> Force Shutdown</a></li>
                             <li><a href="/hardRebootVMRef/{{ $vm }}"><i class="fa fa-recycle fa-fw"></i> Force Reboot</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/getVMInfoRef/{{ $vm }}"><i class="fa fa-gears fa-fw"></i> Properties</a></li>
                         </ul>
                     </div>
                 </td>
+            <?php /*Check if PV and Generate longer Menu*/ ?>
             @else
                 <td>
                     <div class="btn-group dropdown">
-                        <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-cog fa-spin fa-fw"></i> Ops</a>
+                        <a class="btn btn-primary btn-sm" href="/getVMInfoRef/{{ $vm }}"><i class="fa fa-cog fa-spin fa-fw"></i> Ops</a>
                         <a class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="fa fa-caret-down"></span></a>
                         <ul class="dropdown-menu">
@@ -107,7 +111,7 @@
                             <li class="divider"></li>
                             <li><a href="#"><i class="fa fa-camera fa-fw"></i> Take Snapshot</a></li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="fa fa-gears fa-fw"></i> Properties</a></li>
+                            <li><a href="/getVMInfoRef/{{ $vm }}"><i class="fa fa-gears fa-fw"></i> Properties</a></li>
                         </ul>
                     </div>
                 </td>
