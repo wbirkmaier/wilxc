@@ -28,7 +28,7 @@
 		<th>Resident On</th>
 		<th>HVM Boot Policy</th>
 		<th>Power State</th>
-		<th>Action</th>
+		<th width="10%">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -75,10 +75,12 @@
                 <td>{{ $hvmBootState }}</td>
                 
                 <td>{{ $powerState }}</td>
+            
 <?php /*Check power state from variable above anddisplay row approprialy with link*/ ?> 
 @if($powerState == 'Halted')              
                 <td><a href="/startVMRef/{{ $vm }}"class="btn btn-success btn-sm"> <i class="fa fa-play fa-fw"></i> Start VM</a></td>
 @elseif($powerState == 'Running')
+            
             <?php /*Check if HVM and Generate shorter Menu*/ ?>
             @if($hvmBootState =='BIOS order')
                 <td>
