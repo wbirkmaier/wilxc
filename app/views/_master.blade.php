@@ -71,6 +71,9 @@
 		</div>
 	</div>	
 
+    <a href="/xenapi-1.0.6.pdf">Download XenAPI PDF</a>
+    <br>
+    <a href="http://docs.vmd.citrix.com/XenServer/6.2.0/1.0/en_gb/api/">Citrix Xenserver 6.2 API</a>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="js/jquery.min.js"></script>

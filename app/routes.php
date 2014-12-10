@@ -20,7 +20,9 @@ Route::get('/getHostInfoRef/{hostRef}', 'DetailsController@getHostInfoRef');
 
 /*Operations on VMs Route*/
 Route::get('/startVMRef/{vmRef}', 'OperationsController@startVMRef');
-Route::get('/stopVMRef/{vmRef}', 'OperationsController@stopVMRef');
+Route::get('/cleanShutdownVMRef/{vmRef}', 'OperationsController@cleanShutdownVMRef');
+Route::get('/suspendVMRef/{vmRef}', 'OperationsController@suspendVMRef');
+Route::get('/cleanRebootVMRef/{vmRef}', 'OperationsController@cleanRebootVMRef');
 
 /*Default catch all view for wrong routes*/
 App::missing(function($exception)
