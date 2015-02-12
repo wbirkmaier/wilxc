@@ -9,7 +9,7 @@ What needs work:
 + Improve query times
 + Create VMs from template
 + Authentication for users
-+ Pull configs to up date tool bar
++ Pull configs to update tool bar
 
 #Install steps
 
