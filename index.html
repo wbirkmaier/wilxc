@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>WilXC by wbirkmaier</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>WilXC</h1>
+        <h2>A web based XenCenter type control panel and console in alpha for XenServer 6</h2>
+        <a href="https://github.com/wbirkmaier/wilxc" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p>What is done:</p>
+
+<ul>
+<li>Can query the xenserver for all running VMs</li>
+<li>Display all VMs and allow stopping, starting, pause, snapshot, reboot, force reboot and shutdown.</li>
+<li>Can display properties of VM.</li>
+<li>Framework in place for authentiaction via msyql</li>
+</ul>
+
+<p>What needs work:</p>
+
+<ul>
+<li>Improve query times</li>
+<li>Create VMs from template</li>
+<li>Authentication for users</li>
+<li>Pull configs to update tool bar</li>
+</ul>
+
+<p><img src="/README.png?raw=true" alt="Alt text" title="Main WilXC Screen"></p>
+
+<h1>
+<a id="install-steps" class="anchor" href="#install-steps" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install steps</h1>
+
+<h2>
+<a id="setting-up-laravel" class="anchor" href="#setting-up-laravel" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting Up Laravel</h2>
+
+<pre><code>mkdir gitrepo
+</code></pre>
+
+<pre><code>yum install php php-mcrypt php-pdo httpd mysql mysql-server php-mysqlnd php-xmlrpc
+</code></pre>
+
+<pre><code>service mysqld start; chkconfig mysqld on
+</code></pre>
+
+<pre><code>cd /usr/local/bin; curl -sS https://getcomposer.org/installer | php; mv composer.phar composer; 
+</code></pre>
+
+<pre><code>cd ~/gitrepo
+</code></pre>
+
+<pre><code>composer create-project laravel/laravel --prefer-dist
+</code></pre>
+
+<h2>
+<a id="staging-scripts" class="anchor" href="#staging-scripts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Staging scripts</h2>
+
+<p>Production:</p>
+
+<ul>
+<li>deploy.sh:</li>
+</ul>
+
+<pre><code>#!/bin/bash
+rm -Rf p4
+git clone git@github.com:wbirkmaier/p4.git
+cd p4
+composer install --prefer-dist
+chmod -R 777 app/storage
+cd ..
+</code></pre>
+
+<ul>
+<li>stage.sh</li>
+</ul>
+
+<pre><code>#!/bin/bash
+rm -Rf laravel
+cp -R /home/wbirkmaier/gitrepo/test/laravel/ .
+cd laravel
+chmod -R 777 app/storage
+</code></pre>
+
+<h2>
+<a id="sync-to-apache-dir" class="anchor" href="#sync-to-apache-dir" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sync to apache dir</h2>
+
+<ul>
+<li>cp <code>&lt;project&gt;</code> in /var/www/html </li>
+<li>replace DocumentRoot "/var/www/html" in vi /etc/httpd/conf/httpd.conf in <code>&lt;project&gt;</code>/public</li>
+</ul>
+
+<pre><code>&lt;Directory "/var/www/html"&gt;
+    AllowOverride All
+</code></pre>
+
+<ul>
+<li>make sure you</li>
+</ul>
+
+<pre><code>chmod -R 777 app/storage
+</code></pre>
+
+<ul>
+<li>allow httpd with selinux</li>
+</ul>
+
+<pre><code>setsebool -P httpd_unified 1
+</code></pre>
+
+<h2>
+<a id="debug-environments" class="anchor" href="#debug-environments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debug environments</h2>
+
+<pre><code>/app/config/local/app.php We set debug to true
+/app/config/production/app.php We set debug to false
+/app/config/app.php We set debug to false
+</code></pre>
+
+<h2>
+<a id="determine-environment" class="anchor" href="#determine-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Determine Environment</h2>
+
+<p>vi /bootstrap/start.php</p>
+
+<ul>
+<li>For all environments to get devel environment</li>
+</ul>
+
+<pre><code>$env = $app-&gt;detectEnvironment(array(
+
+    'local' =&gt; array('*'),
+
+));
+</code></pre>
+
+<ul>
+<li>Otherwise do this for each environment:</li>
+</ul>
+
+<pre><code>$env = $app-&gt;detectEnvironment(array(
+
+    'local' =&gt; array('Jane-Doe-MacBook-Air.local'),
+    'production' =&gt; array('ex-std-node292.prod.rhcloud.com'),
+
+));
+</code></pre>
+
+<h2>
+<a id="database-setup" class="anchor" href="#database-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Database Setup</h2>
+
+<p><code>mysql -u root</code></p>
+
+<p><code>create database wilxc;</code></p>
+
+<p>exit the database.</p>
+
+<pre><code>/usr/bin/mysql_secure_installation and say yes to all, set password
+
+Then edit the files below:
+vi /app/config/database.php
+vi /app/config/local/database.php
+</code></pre>
+
+<pre><code> 'mysql' =&gt; array(
+                        'driver'    =&gt; 'mysql',
+                        'host'      =&gt; 'localhost',
+                        'database'  =&gt; 'laravel',
+                        'username'  =&gt; 'root',
+                        'password'  =&gt; '',
+</code></pre>
+
+<h2>
+<a id="test-database" class="anchor" href="#test-database" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test Database</h2>
+
+<p>vi app/routes.php</p>
+
+<pre><code>Route::get('test', function()
+{
+    echo 'Environment: '.App::environment().'&lt;br&gt;';
+    $results = DB::select('SHOW DATABASES;');
+    echo print_r($results);
+    phpinfo();
+}); 
+</code></pre>
+
+<h2>
+<a id="migration-schemas" class="anchor" href="#migration-schemas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Migration (Schemas)</h2>
+
+<pre><code>php artisan migrate:make create_test_table
+</code></pre>
+
+<ul>
+<li>Run the migration</li>
+</ul>
+
+<pre><code>php artisan migrate
+</code></pre>
+
+<h2>
+<a id="set-up-andy-goodwin-code-for-laravel" class="anchor" href="#set-up-andy-goodwin-code-for-laravel" aria-hidden="true"><span class="octicon octicon-link"></span></a>Set up Andy Goodwin Code for laravel</h2>
+
+<p>In app/models add XenApi.php, case matters</p>
+
+<pre><code>&lt;?php
+/*
+ *    PHP XenAPI v1.0
+ *    a class for XenServer API calls
+ *
+ *    Copyright (C) 2010 Andy Goodwin &lt;andyg@unf.net&gt;
+ *
+ *    This class requires xml-rpc, PHP5, and curl.
+ *
+ *    Permission is hereby granted, free of charge, to any person obtaining 
+ *    a copy of this software and associated documentation files (the 
+ *    "Software"), to deal in the Software without restriction, including 
+ *    without limitation the rights to use, copy, modify, merge, publish, 
+ *    distribute, sublicense, and/or sell copies of the Software, and to 
+ *    permit persons to whom the Software is furnished to do so, subject to 
+ *    the following conditions:
+ *
+ *    The above copyright notice and this permission notice shall be included 
+ *    in all copies or substantial portions of the Software.
+ *
+ *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+ *    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+ *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+ *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+ *    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+ *    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+class XenApi extends Eloquent 
+{
+
+</code></pre>
+
+<p>?&gt; can be removed from the end as well</p>
+
+<p>From main code remove</p>
+
+<pre><code>&lt;?
+include('xenapi.php');
+</code></pre>
+
+<h1>
+<a id="user-authentication" class="anchor" href="#user-authentication" aria-hidden="true"><span class="octicon octicon-link"></span></a>User Authentication</h1>
+
+<p>app/config/session.php</p>
+
+<pre><code>'driver' =&gt; 'database',
+</code></pre>
+
+<pre><code>php artisan session:table
+</code></pre>
+
+<pre><code>php artisan migrate
+</code></pre>
+
+<pre><code>php artisan migrate:make create_user_table
+</code></pre>
+
+<pre><code>public function up()
+    {
+         Schema::create('users', function($table)
+            {
+                $table-&gt;increments('id');
+                $table-&gt;string('username', 128)-&gt;unique();
+                $table-&gt;string('password', 60);
+                $table-&gt;string('email', 254)-&gt;unique();
+                $table-&gt;rememberToken();
+                $table-&gt;timestamps();
+            });
+    }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('users');
+    }
+</code></pre>
+
+<pre><code>php artisan migrate
+</code></pre>
+
+<h1>
+<a id="connect-to-your-xenserver" class="anchor" href="#connect-to-your-xenserver" aria-hidden="true"><span class="octicon octicon-link"></span></a>Connect to your XenServer</h1>
+
+<p>vi app/models/Credentials.php</p>
+
+<pre><code>class Credentials extends Eloquent
+    {   
+    private static function url()
+        {
+            $staticURL = "https://192.168.0.2";
+            return $staticURL;
+        }
+    private static function login()
+        {
+            $staticLogin = "root";
+            return $staticLogin;
+        }
+    private static function password()
+        {
+            $staticPassword = "";
+            return $staticPassword;
+        }
+
+</code></pre>
+
+<p>vim bootstrap/start.php to change your environment from dev to prod, etc, change to relevant hostname</p>
+
+<h1>
+<a id="credits--external-notes" class="anchor" href="#credits--external-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits &amp; External notes</h1>
+
+<ul>
+<li>PHP XenApi code from <a href="https://github.com/andygoodwin/PHP-xenapi">https://github.com/andygoodwin/PHP-xenapi</a>
+</li>
+<li>XenServer Managment API <a href="http://docs.vmd.citrix.com/XenServer/6.2.0/1.0/en_gb/api/">http://docs.vmd.citrix.com/XenServer/6.2.0/1.0/en_gb/api/</a>
+</li>
+<li>Bootstrap <a href="http://getbootstrap.com/">http://getbootstrap.com/</a>
+</li>
+<li>Font Awesome <a href="https://fortawesome.github.io/Font-Awesome/">https://fortawesome.github.io/Font-Awesome/</a>
+</li>
+</ul>
+
+<h2>
+<a id="tips-and-trick" class="anchor" href="#tips-and-trick" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tips and Trick</h2>
+
+<ul>
+<li>php --ini</li>
+<li>phpinfo();</li>
+<li>php code.php</li>
+</ul>
+
+<p>```All Classes in XenAPI can have the follow operations done, example Credentials::loginXen()-&gt;VM_get_by_uuid($uuid);"
+   "get_by_name_label"
+   "get_by_uuid"
+   "get_record"
+   "get_all"</p>
+
+<p>Also you can do VM_get{fields}, VM_get_is_a_template, or VM_get_bios_strings
+   set_X: change the value of field X (only if it is read-write);
+   get_X: retrieve the value of field X;
+   add_to_X: add a key/value pair (only if field has type set or map); and
+   remove_from_X: remove a key (only if a field has type set or map).
+   <a href="http://docs.vmd.citrix.com/XenServer/6.2.0/1.0/en_gb/api/">http://docs.vmd.citrix.com/XenServer/6.2.0/1.0/en_gb/api/</a></p>
+
+<p>Enums are operations you can do directly against an OpaqueRef
+   Credentials::loginXen()-&gt;VM_clean_shutdown($vmRef);</p>
+
+<pre><code>#Example of drilling through the arrays
+
+</code></pre>
+
+<p>&lt;?php $poolGetAll = $xenserver-&gt;pool_get_all(); ?&gt;
+&lt;?php echo '</p><pre>'; print_r($poolGetAll); echo '</pre>'; ?&gt;
+&lt;?php $poolObjRef = $poolGetAll["0"]; ?&gt;
+&lt;?php echo '<pre>'; print_r($poolObjRef); echo '</pre>'; ?&gt;<br>
+&lt;?php $poolNameLabel = $xenserver-&gt;pool_get_record($poolObjRef); ?&gt;
+&lt;?php echo '<pre>'; print_r($poolNameLabel); echo '</pre>'; ?&gt;
+
+<pre><code></code></pre>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/wbirkmaier/wilxc/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/wbirkmaier/wilxc/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/wbirkmaier/wilxc"></a> is maintained by <a href="https://github.com/wbirkmaier">wbirkmaier</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
