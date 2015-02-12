@@ -239,6 +239,31 @@ public function up()
 php artisan migrate
 ```
 
+#Connect to your XenServer
+vi app/models/Credentials.php
+```
+class Credentials extends Eloquent
+    {   
+	private static function url()
+		{
+			$staticURL = "https://192.168.0.2";
+			return $staticURL;
+		}
+	private static function login()
+        {
+			$staticLogin = "root";
+			return $staticLogin;
+        }
+	private static function password()
+        {
+            $staticPassword = "";
+			return $staticPassword;
+        }
+
+```
+
+vim bootstrap/start.php to change your environment from dev to prod, etc, change to relevant hostname
+
 
 #Credits & External notes
 + PHP XenApi code from <https://github.com/andygoodwin/PHP-xenapi>
