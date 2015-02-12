@@ -10,6 +10,7 @@ What needs work:
 + Create VMs from template
 + Authentication for users
 + Pull configs to update tool bar
++ HTTPS Suport on client side
 
 ![Alt text](https://github.com/wbirkmaier/wilxc/blob/master/README.png?raw=true "Main WilXC Screen")
 
