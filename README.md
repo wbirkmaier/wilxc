@@ -11,6 +11,8 @@ What needs work:
 + Authentication for users
 + Pull configs to update tool bar
 
+![Alt text](/wbirkmaier/wilxc/blob/master/README.png?raw=true "Main WilXC Screen")
+
 #Install steps
 
 ##Setting Up Laravel
