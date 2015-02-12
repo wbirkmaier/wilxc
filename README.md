@@ -1,15 +1,15 @@
 #A web based xencenter type control panel and console in alpha for XenServer 6
 What is done:
-+Can query the xenserver for all running VMs
-+Display all VMs and allow stopping, starting, pause, snapshot, reboot, force reboot and shutdown.
-+Can display properties of VM.
-+Framework in place for authentiaction via msyql
++ Can query the xenserver for all running VMs
++ Display all VMs and allow stopping, starting, pause, snapshot, reboot, force reboot and shutdown.
++ Can display properties of VM.
++ Framework in place for authentiaction via msyql
 
 What needs work:
-+Improve query times
-+Create VMs from template
-+Authentication for users
-+Pull configs to up date tool bar
++ Improve query times
++ Create VMs from template
++ Authentication for users
++ Pull configs to up date tool bar
 
 #Install steps
 
