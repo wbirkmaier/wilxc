@@ -11,7 +11,7 @@ What needs work:
 + Authentication for users
 + Pull configs to update tool bar
 
-![Alt text](/README.png?raw=true "Main WilXC Screen")
+![Alt text](https://github.com/wbirkmaier/wilxc/blob/master/README.png?raw=true "Main WilXC Screen")
 
 #Install steps
 
